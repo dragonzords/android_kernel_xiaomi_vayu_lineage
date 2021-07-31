@@ -234,11 +234,7 @@ struct dsi_panel {
 	enum dsi_dms_mode dms_mode;
 
 	bool sync_broadcast_en;
-
-	bool is_tddi_flag;
 	bool tddi_doubleclick_flag;
-	bool panel_dead_flag;
-
 	int power_mode;
 	enum dsi_panel_physical_type panel_type;
 
