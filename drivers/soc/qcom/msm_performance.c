@@ -91,6 +91,13 @@ static int set_cpu_min_freq(const char *buf, const struct kernel_param *kp)
 		return ret;
 	}
 
+	int ret = 0;
+
+	if (!touchboost) {
+		pr_info("Ignored touchboost event!\n");
+		return ret;
+	}
+
 	while ((cp = strpbrk(cp + 1, " :")))
 		ntokens++;
 
