@@ -2,6 +2,7 @@
 # Automatically generated file; DO NOT EDIT.
 # Linux/arm64 4.14.355 Kernel Configuration
 #
+CONFIG_POLLY_CLANG=y
 CONFIG_SCHED_BORE=y
 CONFIG_SCHED_CASS=y
 CONFIG_BQ2597X_CHARGE_PUMP_VAYU=y
