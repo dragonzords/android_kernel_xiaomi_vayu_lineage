@@ -4,13 +4,14 @@ kernel_dir="${PWD}"
 CCACHE=$(command -v ccache)
 objdir="${kernel_dir}/out"
 ANYKERNEL="/workspace/jale/AnyKernel3"
+DISPLAY="arch/arm64/boot/dts/qcom/xiaomi/overlay/common/display"
 builddir="${kernel_dir}/build"
 ZIMAGE=$kernel_dir/out/arch/arm64/boot/Image
 TC_DIR="/workspace/"
 KERNEL_LOG="$KERNEL_DIR/out/log-$(TZ=Asia/Jakarta date +'%H%M').txt"
 MKDTBOIMG="/workspace/jale/libufdt/utils/src/mkdtboimg.py"
-CLANG_DIR="/workspace/jale/clang/clang-r530560"
-GCC64_DIR="/workspace/jale/gcc64/aarch64--glibc--stable-2024.02-1"
+CLANG_DIR="/workspace/jale/clang"
+GCC64_DIR="/workspace/jale/gcc64/aarch64--glibc--stable-2024.05-1"
 GCC32_DIR="/workspace/jale/gcc32"
 export CONFIG_FILE="vayu_defconfig"
 export ARCH="arm64"
@@ -68,10 +69,23 @@ compile()
     CC="ccache clang"                       \
     $1
 }
+miui() 
+{
+    sed -i 's/<70>/<695>/g'   $DISPLAY/dsi-panel-j20s-36-02-0a-lcd-dsc-vid.dtsi
+    sed -i 's/<154>/<1546>/g' $DISPLAY/dsi-panel-j20s-36-02-0a-lcd-dsc-vid.dtsi
+    sed -i 's/<70>/<695>/g'   $DISPLAY/dsi-panel-j20s-42-02-0b-lcd-dsc-vid.dtsi
+    sed -i 's/<154>/<1546>/g' $DISPLAY/dsi-panel-j20s-42-02-0b-lcd-dsc-vid.dtsi
+}
 sdk()
 {
     python3 $MKDTBOIMG create $ANYKERNEL/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/qcom/vayu-sm8150-overlay.dtbo
     find out/arch/arm64/boot/dts/qcom -name 'sm8150-v2*.dtb' -exec cat {} + > $ANYKERNEL/dtb
+	python3 $MKDTBOIMG create $ANYKERNEL/dtbo-miui.img --page_size=4096 out/arch/arm64/boot/dts/qcom/vayu-sm8150-overlay.dtbo
+}
+restore()
+{
+	git restore $DISPLAY/dsi-panel-j20s-36-02-0a-lcd-dsc-vid.dtsi
+	git restore $DISPLAY/dsi-panel-j20s-42-02-0b-lcd-dsc-vid.dtsi
 }
 completion()
 {
@@ -92,6 +106,8 @@ completion()
 }
 make_defconfig
 compile
+miui
 sdk
+restore
 completion
 cd ${kernel_dir}
