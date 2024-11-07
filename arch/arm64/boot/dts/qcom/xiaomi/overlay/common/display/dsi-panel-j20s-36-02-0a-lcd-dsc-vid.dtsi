@@ -59,7 +59,7 @@
 		qcom,mdss-dsi-pan-enable-dynamic-fps;
 		qcom,mdss-dsi-pan-fps-update =
 			"dfps_immediate_porch_mode_vfp";
-		qcom,dsi-supported-dfps-list = <120 90 60 50 48 30>;
+		qcom,dsi-supported-dfps-list = <120 110 100 95 90 85 80 75 70 65 60 55 50 48 45 35 30 25>;
 
 		qcom,dispparam-enabled;
 
