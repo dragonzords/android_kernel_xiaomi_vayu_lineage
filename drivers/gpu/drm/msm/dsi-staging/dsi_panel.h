@@ -242,7 +242,8 @@ struct dsi_panel {
 	int power_mode;
 	enum dsi_panel_physical_type panel_type;
 
-	int hbm_mode;
+	struct brightness_alpha_pair *fod_dim_lut;
+	u32 fod_dim_lut_count;
 };
 
 static inline bool dsi_panel_ulps_feature_enabled(struct dsi_panel *panel)
@@ -363,6 +364,16 @@ int dsi_panel_parse_esd_reg_read_configs(struct dsi_panel *panel);
 
 void dsi_panel_ext_bridge_put(struct dsi_panel *panel);
 
-int dsi_panel_apply_hbm_mode(struct dsi_panel *panel);
+int dsi_panel_set_fod_hbm(struct dsi_panel *panel, bool status);
+
+u32 dsi_panel_get_fod_dim_alpha(struct dsi_panel *panel);
+
+ssize_t dsi_panel_lockdown_info_read(unsigned char *plockdowninfo);
+
+int dsi_panel_write_cmd_set(struct dsi_panel *panel, struct dsi_panel_cmd_set *cmd_sets);
+
+int dsi_panel_read_cmd_set(struct dsi_panel *panel, struct dsi_read_config *read_config);
+
+void dsi_panel_doubleclick_enable(bool on);
 
 #endif /* _DSI_PANEL_H_ */
